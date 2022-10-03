@@ -33,17 +33,18 @@ class HomeViewController: UIViewController {
     
     private func configureNavbar(){
         var image = UIImage(named: "NetflixLogo")
-        image = image?.withRenderingMode(.alwaysOriginal)
+        image = image?.withRenderingMode(.alwaysOriginal).resizeTo(size: CGSize(width: 50, height: 50))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: image, style: .done, target: self, action: nil)
         
         
         
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: UIImage(systemName: "person"), style: .done, target: self, action: nil),
+            UIBarButtonItem(image: UIImage(systemName: "person"), style: .plain, target: self, action: nil),
             UIBarButtonItem(image: UIImage(systemName: "play.rectangle"), style: .done, target: self, action: nil),
         ]
+        navigationItem.rightBarButtonItems?.first!.tintColor = .white
+        navigationItem.rightBarButtonItems?.last!.tintColor = .white
         
-        navigationController?.navigationBar.barTintColor = .systemBackground 
     }
     
     override func viewDidLoad() {
@@ -66,6 +67,7 @@ class HomeViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds
+        
     }
     
     private func configureHeroHeaderView() {
@@ -200,3 +202,13 @@ extension HomeViewController: CollectionViewTableViewCellDelegate {
     }
 }
 
+extension UIImage {
+    func resizeTo(size: CGSize) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let image = renderer.image { _ in
+            self.draw(in: CGRect.init(origin: CGPoint.zero, size: size))
+        }
+        
+        return image.withRenderingMode(self.renderingMode)
+    }
+}
